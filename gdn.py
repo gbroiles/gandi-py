@@ -10,11 +10,15 @@ except KeyError:
     print("Environment variable GANDI_API must be set.")
     sys.exit(1)
 
+headers = {"authorization": "Apikey " + apikey}
+
+for domain in ("aaa","zzz"):
+    print(domain)
+sys.exit(0)
+
 querystring = {
     "name": sys.argv[1],
 }
-
-headers = {"authorization": "Apikey " + apikey}
 
 try:
     response = requests.request("GET", URL, headers=headers, params=querystring)
