@@ -17,7 +17,7 @@ except KeyError:
 
 headers = {"authorization": "Apikey " + apikey}
 
-delay = .3
+delay = 1
 
 updatelist=[]
 
@@ -31,7 +31,7 @@ for row in res.fetchall():
     status = row[1]
     timestamp = row[2]
     querystring = {"name":name}
-    print(name,file=sys.stderr)
+#    print(name,file=sys.stderr)
     try:
 #        print(f"requesting {querystring}")
         response = requests.request("GET", URL, headers=headers, params=querystring)
