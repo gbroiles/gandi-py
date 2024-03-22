@@ -19,7 +19,9 @@ URL = "https://api.gandi.net/v5/domain/check"
 
 def debugprint(output):
     now = datetime.datetime.now().strftime("%H:%M:%S.%f")
-    print(now + " -- " + output, file=sys.stderr, flush=True)
+    print(now, file=sys.stderr, end="")
+    print(" - ", file=sys.stderr, end="")
+    print(output, file=sys.stderr,flush=True )
 
 
 try:
@@ -32,6 +34,7 @@ headers = {"authorization": "Apikey " + apikey}
 
 DELAY = 5
 TIMEOUT = 60
+SEARCHTARGET = '_____.com'
 
 database = "domains.db"
 con = sqlite3.connect(database, timeout=TIMEOUT)
@@ -41,7 +44,7 @@ con.row_factory = sqlite3.Row
 res = con.execute(
     "SELECT * FROM domains WHERE STATUS = "
     + str(UNKNOWN)
-    + " AND NAME LIKE '____.___';"
+    + " AND NAME LIKE '"+SEARCHTARGET+"';"
 )
 debugprint("Got result list")
 all = res.fetchall()
