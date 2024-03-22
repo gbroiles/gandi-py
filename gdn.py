@@ -12,7 +12,7 @@ except KeyError:
 
 headers = {"authorization": "Apikey " + apikey}
 
-for domain in ("aaa","zzz"):
+for domain in ("aaa", "zzz"):
     print(domain)
 sys.exit(0)
 

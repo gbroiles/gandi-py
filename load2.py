@@ -6,7 +6,7 @@ dictionary = "american-english-insane"
 
 badchars = string.punctuation + string.whitespace
 
-data=[]
+data = []
 timestamp = time.time()
 
 with open(dictionary) as f:
@@ -14,10 +14,10 @@ with open(dictionary) as f:
         if "'" in word:
             continue
         if len(word.strip(badchars)) == 3:
-            data.append((word.strip(badchars),'unknown',timestamp))
-                        
+            data.append((word.strip(badchars), "unknown", timestamp))
+
 database = "domains.db"
 con = sqlite3.connect(database)
 cur = con.cursor()
-cur.executemany("INSERT INTO domains VALUES (?, ?, ?)",data)
+cur.executemany("INSERT INTO domains VALUES (?, ?, ?)", data)
 con.commit()

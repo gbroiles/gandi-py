@@ -18,31 +18,32 @@ database = "domains.db"
 con = sqlite3.connect(database, timeout=180)
 cur = con.cursor()
 
-data=[]
+data = []
 timestamp = time.time()
 
+
 def dbload(mydata):
-    if random.randint(0,1000) == 0:
-        print("Attempt: ",mydata)
+    if random.randint(0, 1000) == 0:
+        print("Attempt: ", mydata)
     try:
-        cur.execute("INSERT INTO domains VALUES (?, ?, ?)",mydata)
+        cur.execute("INSERT INTO domains VALUES (?, ?, ?)", mydata)
         con.commit()
     except sqlite3.IntegrityError as er:
-        print("duplicate: ",mydata)
+        print("duplicate: ", mydata)
     except sqlite3.Error as er:
-        print('SQLite error: %s' % (' '.join(er.args)))
+        print("SQLite error: %s" % (" ".join(er.args)))
         print("Exception class is: ", er.__class__)
-        print('SQLite traceback: ')
+        print("SQLite traceback: ")
         exc_type, exc_value, exc_tb = sys.exc_info()
         print(traceback.format_exception(exc_type, exc_value, exc_tb))
     return
 
+
 with open(dictionary) as f:
     for word in f:
-        word2=word.strip(badchars)
-        word3=word2.lower()
+        word2 = word.strip(badchars)
+        word3 = word2.lower()
         if "'" in word3:
             continue
-        for extension in ['.com', '.net', '.org']:
-            dbload((word3+extension, UNKNOWN, timestamp))
-                        
+        for extension in [".com", ".net", ".org"]:
+            dbload((word3 + extension, UNKNOWN, timestamp))
