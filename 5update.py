@@ -5,6 +5,7 @@ import os
 import string
 import sys
 import time
+import random
 import requests
 import sqlite3
 import pprint
@@ -21,7 +22,7 @@ def debugprint(output):
     now = datetime.datetime.now().strftime("%H:%M:%S.%f")
     print(now, file=sys.stderr, end="")
     print(" - ", file=sys.stderr, end="")
-    print(output, file=sys.stderr,flush=True )
+    print(output, file=sys.stderr, flush=True)
 
 
 try:
@@ -32,9 +33,9 @@ except KeyError:
 
 headers = {"authorization": "Apikey " + apikey}
 
-DELAY = 5
+DELAYMAX = 60
 TIMEOUT = 60
-SEARCHTARGET = '_____.com'
+SEARCHTARGET = "______.___"
 
 database = "domains.db"
 con = sqlite3.connect(database, timeout=TIMEOUT)
@@ -44,7 +45,9 @@ con.row_factory = sqlite3.Row
 res = con.execute(
     "SELECT * FROM domains WHERE STATUS = "
     + str(UNKNOWN)
-    + " AND NAME LIKE '"+SEARCHTARGET+"';"
+    + " AND NAME LIKE '"
+    + SEARCHTARGET
+    + "';"
 )
 debugprint("Got result list")
 all = res.fetchall()
@@ -80,6 +83,6 @@ for row in all:
             "\n" + "".join(traceback.format_exception(type, value, tb)).strip("\n")
         )
         continue
-    cur.execute("REPLACE INTO domains VALUES (?, ?, ?)", mytuple)
+    cur.execute("REPLACE INTO domains(name, status, date) VALUES (?, ?, ?)", mytuple)
     con.commit()
-    time.sleep(DELAY)
+    time.sleep(random.uniform(0, DELAYMAX))
